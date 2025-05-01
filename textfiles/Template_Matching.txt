@@ -1,0 +1,46 @@
+i = [2 1 0 0 3;
+     0 0 5 0 0;
+     0 4 0 6 0;
+     1 0 5 0 0];  % 4x5 image
+
+t = [0 4 0;
+     3 0 5;
+     0 4 0];  % 3x3 template
+
+P = [0 0 0;
+     0 0 0];  % Performance matrix initialization
+
+m = 5;  % Image height
+n = 4;  % Image width
+m0 = 3; % Template height
+n0 = 3; % Template width
+
+for k = 1:n-n0+1
+    for j = 1:m0
+        for x = 1:n-n0+1
+            for y = 1:m-m0+1
+                P(x, y) = P(x, y) + abs(i(k+x-1, j+y-1) - t(k ,j));
+            end
+        end
+    end
+end
+
+disp("P = ")
+disp(P)
+
+Y = min(P, [], 1);
+Z = min(Y);
+
+disp("Minimum Performance Index: ")
+disp(Z)
+
+[r, c] = size(P);
+
+for i = 1:r
+    for j = 1:c
+        if (P(i, j) == Z)
+            disp("location")
+            disp(i-1), disp(","), disp(j-1)
+        end
+    end
+end
